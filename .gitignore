@@ -1,0 +1,9 @@
+.next
+node_modules
+next-env.d.ts
+next-dev.log
+next-start.log
+.codex-*.log
+.env
+.env*.local
+*.tsbuildinfo

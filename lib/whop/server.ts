@@ -22,11 +22,19 @@ export function createWhopClient() {
 
 export function getWhopPaymentLink(plan: string | null) {
   if (plan === "mensuel") {
-    return process.env.WHOP_PAYMENT_LINK_MENSUEL?.trim() || "";
+    return (
+      process.env.WHOP_PAYMENT_LINK_MENSUEL?.trim() ||
+      process.env.NEXT_PUBLIC_WHOP_PAYMENT_LINK_MENSUEL?.trim() ||
+      ""
+    );
   }
 
   if (plan === "annuel") {
-    return process.env.WHOP_PAYMENT_LINK_ANNUEL?.trim() || "";
+    return (
+      process.env.WHOP_PAYMENT_LINK_ANNUEL?.trim() ||
+      process.env.NEXT_PUBLIC_WHOP_PAYMENT_LINK_ANNUEL?.trim() ||
+      ""
+    );
   }
 
   return "";

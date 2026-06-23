@@ -70,10 +70,25 @@ export default function DashboardApp({
           </a>
         </nav>
 
+        <div className="mt-auto flex items-center justify-between gap-3 rounded-[1.25rem] bg-blue-50 px-4 py-3 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
+          <span>
+            {profile.isPro
+              ? "Pro illimité"
+              : `${profile.creditsRemaining} crédit${
+                  profile.creditsRemaining > 1 ? "s" : ""
+                } restant${profile.creditsRemaining > 1 ? "s" : ""}`}
+          </span>
+          <a
+            href="/pricing"
+            className="shrink-0 text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-linkpost-blue hover:decoration-linkpost-blue"
+          >
+            Upgrade
+          </a>
+        </div>
         <button
           type="button"
           onClick={logout}
-          className="mt-auto w-full rounded-full bg-linkpost-blue px-4 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(59,130,246,0.24)] transition hover:bg-blue-500"
+          className="mt-3 w-full rounded-full bg-linkpost-blue px-4 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(59,130,246,0.24)] transition hover:bg-blue-500"
         >
           Déconnexion
         </button>
@@ -110,6 +125,21 @@ export default function DashboardApp({
             Historique
           </a>
         </nav>
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-full bg-blue-50 px-3 py-2 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
+          <span>
+            {profile.isPro
+              ? "Pro illimité"
+              : `${profile.creditsRemaining} crédit${
+                  profile.creditsRemaining > 1 ? "s" : ""
+                } restant${profile.creditsRemaining > 1 ? "s" : ""}`}
+          </span>
+          <a
+            href="/pricing"
+            className="shrink-0 text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-linkpost-blue hover:decoration-linkpost-blue"
+          >
+            Upgrade
+          </a>
+        </div>
         <button
           type="button"
           onClick={logout}

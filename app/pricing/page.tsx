@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { ArrowLeft, Check, ChevronDown, Sparkles } from "lucide-react";
 import BrandLogo from "../../components/BrandLogo";
+import {
+  createClient,
+  isServerSupabaseConfigured,
+} from "../../lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Pricing - LinkPost.tech",
@@ -52,7 +56,18 @@ const faqs = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  let isAuthenticated = false;
+
+  if (isServerSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    isAuthenticated = Boolean(user);
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(219,234,254,0.86)_0%,rgba(239,246,255,0.96)_42%,rgba(255,255,255,0.98)_100%)]" />
@@ -64,11 +79,11 @@ export default function PricingPage() {
           <BrandLogo imageClassName="h-8 w-auto sm:h-9" />
         </a>
         <a
-          href="/dashboard"
+          href={isAuthenticated ? "/dashboard" : "/auth?next=/pricing"}
           className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-extrabold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
         >
           <ArrowLeft size={17} strokeWidth={2.4} />
-          Retour dashboard
+          {isAuthenticated ? "Retour dashboard" : "Se connecter"}
         </a>
       </header>
 

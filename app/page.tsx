@@ -13,6 +13,10 @@ import {
 } from "lucide-react";
 import AuthPromptForm from "../components/AuthPromptForm";
 import BrandLogo from "../components/BrandLogo";
+import {
+  createClient,
+  isServerSupabaseConfigured,
+} from "../lib/supabase/server";
 
 const navLinks = [
   { label: "Fonctionnalités", href: "#fonctionnalites" },
@@ -229,7 +233,7 @@ function AvatarPhoto({
   );
 }
 
-function Header() {
+function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
   return (
     <header className="sticky top-3 z-50 mx-auto flex w-full max-w-[430px] items-center justify-between rounded-full border border-white/70 bg-white/[0.82] px-5 py-3.5 shadow-[0_18px_60px_rgba(15,23,42,0.12)] ring-1 ring-white/70 backdrop-blur-xl sm:top-6 sm:max-w-[500px] sm:px-6 lg:max-w-[1280px] lg:px-5 lg:py-3">
       <a
@@ -254,16 +258,16 @@ function Header() {
 
       <div className="hidden shrink-0 items-center gap-3 lg:flex">
         <a
-          href="/auth"
+          href={isAuthenticated ? "/dashboard" : "/auth"}
           className="rounded-full px-4 py-2.5 text-sm font-extrabold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
         >
-          Se connecter
+          {isAuthenticated ? "Dashboard" : "Se connecter"}
         </a>
         <a
-          href="/auth"
+          href={isAuthenticated ? "/dashboard" : "/auth"}
           className="rounded-full bg-linkpost-blue px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(59,130,246,0.28)] transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 active:translate-y-px"
         >
-          Commencer gratuitement
+          {isAuthenticated ? "Dashboard" : "Commencer gratuitement"}
         </a>
       </div>
 
@@ -722,14 +726,25 @@ function Footer() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  let isAuthenticated = false;
+
+  if (isServerSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    isAuthenticated = Boolean(user);
+  }
+
   return (
     <div className="relative min-h-screen overflow-x-hidden px-4 pt-3 sm:px-6 sm:pt-8 lg:px-8">
       <div className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(219,234,254,0.74)_0%,rgba(239,246,255,0.92)_35%,rgba(255,255,255,0.96)_100%)] lg:block" />
       <div className="pointer-events-none absolute left-1/2 top-0 hidden h-[520px] w-[1200px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.34),rgba(191,219,254,0.20)_48%,rgba(255,255,255,0)_72%)] blur-3xl lg:block" />
       <div className="pointer-events-none absolute bottom-[-26rem] left-1/2 hidden h-[700px] w-[980px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.13),rgba(255,255,255,0)_68%)] blur-2xl lg:block" />
 
-      <Header />
+      <Header isAuthenticated={isAuthenticated} />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-5.5rem)] w-full max-w-[1280px] flex-col items-center gap-12 pt-12 sm:min-h-[calc(100vh-7rem)] sm:gap-20 sm:pt-16 lg:gap-0 lg:pt-0">
         <div className="lg:hidden">

@@ -1,6 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import {
+  createClient,
+  isSupabaseConfigured,
+} from "../lib/supabase/client";
 
 type AuthPromptFormProps = {
   inputId: string;
@@ -22,7 +26,7 @@ export default function AuthPromptForm({
   return (
     <form
       className={formClassName}
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         const activity = new FormData(event.currentTarget)
           .get("activity")
@@ -32,6 +36,18 @@ export default function AuthPromptForm({
         if (activity) {
           window.sessionStorage.setItem("linkpost_activity", activity);
           window.localStorage.setItem("linkpost_activity", activity);
+        }
+
+        if (isSupabaseConfigured()) {
+          const supabase = createClient();
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            router.push("/dashboard");
+            return;
+          }
         }
 
         router.push("/auth");

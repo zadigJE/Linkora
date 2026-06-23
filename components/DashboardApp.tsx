@@ -17,6 +17,7 @@ type DashboardAppProps = {
   initialProfile: {
     creditsRemaining: number;
     isPro: boolean;
+    plan: "free" | "founder" | "pro";
   };
   initialGenerations: Generation[];
 };
@@ -27,6 +28,16 @@ export default function DashboardApp({
 }: DashboardAppProps) {
   const router = useRouter();
   const [profile, setProfile] = useState(initialProfile);
+
+  function handleProfileChange(nextProfile: {
+    creditsRemaining: number;
+    isPro: boolean;
+  }) {
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      ...nextProfile,
+    }));
+  }
 
   async function logout() {
     const supabase = createClient();
@@ -67,6 +78,18 @@ export default function DashboardApp({
             className="rounded-[1rem] px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
           >
             Historique
+          </a>
+          <a
+            href="/settings"
+            className="rounded-[1rem] px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+          >
+            Profil / Paramètres
+          </a>
+          <a
+            href="/pricing"
+            className="rounded-[1rem] px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+          >
+            Upgrade
           </a>
         </nav>
 
@@ -124,6 +147,18 @@ export default function DashboardApp({
           >
             Historique
           </a>
+          <a
+            href="/settings"
+            className="rounded-full px-3 py-2.5 text-center text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+          >
+            Paramètres
+          </a>
+          <a
+            href="/pricing"
+            className="rounded-full px-3 py-2.5 text-center text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+          >
+            Upgrade
+          </a>
         </nav>
         <div className="mt-3 flex items-center justify-between gap-3 rounded-full bg-blue-50 px-3 py-2 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
           <span>
@@ -154,7 +189,7 @@ export default function DashboardApp({
           initialCreditsRemaining={profile.creditsRemaining}
           initialIsPro={profile.isPro}
           initialGenerations={initialGenerations}
-          onProfileChange={setProfile}
+          onProfileChange={handleProfileChange}
         />
       </main>
     </div>

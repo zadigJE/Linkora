@@ -48,7 +48,11 @@ async function updateProfileAccess(email: string, isPro: boolean) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("profiles")
-    .update({ is_pro: isPro })
+    .update({
+      is_pro: isPro,
+      plan: isPro ? "founder" : "free",
+      updated_at: new Date().toISOString(),
+    })
     .ilike("email", normalizedEmail)
     .select("id");
 

@@ -1,14 +1,41 @@
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
+import { redirect } from "next/navigation";
 import AuthAccessForm from "../../components/AuthAccessForm";
 import BrandLogo from "../../components/BrandLogo";
+import {
+  createClient,
+  isServerSupabaseConfigured,
+} from "../../lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Connexion - LinkPost.tech",
   description: "Connectez-vous ou créez votre compte LinkPost gratuitement.",
 };
 
-export default function AuthPage() {
+function getSafeNextPath(nextPath: string | string[] | undefined) {
+  const value = Array.isArray(nextPath) ? nextPath[0] : nextPath;
+  return value?.startsWith("/") ? value : "/dashboard";
+}
+
+export default async function AuthPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const nextPath = getSafeNextPath((await searchParams)?.next);
+
+  if (isServerSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      redirect(nextPath);
+    }
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(219,234,254,0.86)_0%,rgba(239,246,255,0.96)_42%,rgba(255,255,255,0.98)_100%)]" />

@@ -3,11 +3,25 @@ import type { createClient } from "./server";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
+export type LinkPostPlan = "free" | "founder" | "pro";
+
 export type LinkPostProfile = {
+  id: string;
+  email: string | null;
+  username: string | null;
+  credits_remaining: number;
+  is_pro: boolean;
+  plan: LinkPostPlan;
+  created_at: string;
+  updated_at: string | null;
+};
+
+type LegacyLinkPostProfile = {
   id: string;
   email: string | null;
   credits_remaining: number;
   is_pro: boolean;
+  created_at: string;
 };
 
 type ProfileResult =
@@ -26,6 +40,11 @@ type SupabaseErrorLike = {
   code?: string;
 };
 
+export const profileColumns =
+  "id,email,username,credits_remaining,is_pro,plan,created_at,updated_at";
+
+const legacyProfileColumns = "id,email,credits_remaining,is_pro,created_at";
+
 export function logSupabaseError(
   context: string,
   error: SupabaseErrorLike | null | undefined,
@@ -41,17 +60,97 @@ export function logSupabaseError(
   });
 }
 
+export function normalizePlan(plan: string | null | undefined): LinkPostPlan {
+  if (plan === "founder" || plan === "pro") {
+    return plan;
+  }
+
+  return "free";
+}
+
+export function getPlanLabel(profile: Pick<LinkPostProfile, "is_pro" | "plan">) {
+  if (profile.plan === "pro") {
+    return "Pro";
+  }
+
+  if (profile.plan === "founder" || profile.is_pro) {
+    return "Fondateur";
+  }
+
+  return "Gratuit";
+}
+
+function getDefaultUsername(user: User) {
+  const metadataName = user.user_metadata?.name;
+
+  if (typeof metadataName === "string" && metadataName.trim()) {
+    return metadataName.trim();
+  }
+
+  return user.email?.split("@")[0] ?? "";
+}
+
+function isMissingColumnError(error: SupabaseErrorLike | null | undefined) {
+  return (
+    error?.code === "42703" ||
+    error?.message?.toLowerCase().includes("column") ||
+    false
+  );
+}
+
+function normalizeLegacyProfile(
+  profile: LegacyLinkPostProfile,
+): LinkPostProfile {
+  return normalizeProfile({
+    ...profile,
+    username: null,
+    plan: profile.is_pro ? "founder" : "free",
+    updated_at: null,
+  });
+}
+
+function normalizeProfile(profile: LinkPostProfile): LinkPostProfile {
+  const plan = normalizePlan(profile.plan);
+
+  return {
+    ...profile,
+    plan: profile.is_pro && plan === "free" ? "founder" : plan,
+  };
+}
+
 export async function getOrCreateProfile(
   supabase: SupabaseServerClient,
   user: User,
 ): Promise<ProfileResult> {
-  const profileColumns = "id,email,credits_remaining,is_pro";
-
-  const { data: existingProfile, error: readError } = await supabase
+  let { data: existingProfile, error: readError } = await supabase
     .from("profiles")
     .select(profileColumns)
     .eq("id", user.id)
     .maybeSingle<LinkPostProfile>();
+
+  if (readError) {
+    if (isMissingColumnError(readError)) {
+      const { data: legacyProfile, error: legacyReadError } = await supabase
+        .from("profiles")
+        .select(legacyProfileColumns)
+        .eq("id", user.id)
+        .maybeSingle<LegacyLinkPostProfile>();
+
+      if (!legacyReadError && legacyProfile) {
+        return {
+          profile: normalizeLegacyProfile(legacyProfile),
+          error: null,
+        };
+      }
+
+      if (!legacyReadError) {
+        existingProfile = null;
+        readError = null;
+      } else {
+        readError = legacyReadError;
+      }
+    }
+  }
 
   if (readError) {
     logSupabaseError("profiles.select", readError);
@@ -62,8 +161,41 @@ export async function getOrCreateProfile(
   }
 
   if (existingProfile) {
+    const nextPlan =
+      existingProfile.is_pro && normalizePlan(existingProfile.plan) === "free"
+        ? "founder"
+        : normalizePlan(existingProfile.plan);
+
+    const shouldBackfill =
+      existingProfile.email !== user.email ||
+      !existingProfile.username ||
+      existingProfile.plan !== nextPlan;
+
+    if (shouldBackfill) {
+    const { data: updatedProfile, error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          email: user.email,
+          username: existingProfile.username || getDefaultUsername(user),
+          plan: nextPlan,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id)
+        .select(profileColumns)
+        .single<LinkPostProfile>();
+
+      if (!updateError && updatedProfile) {
+        return {
+          profile: normalizeProfile(updatedProfile),
+          error: null,
+        };
+      }
+
+      logSupabaseError("profiles.backfill", updateError);
+    }
+
     return {
-      profile: existingProfile,
+      profile: normalizeProfile(existingProfile),
       error: null,
     };
   }
@@ -71,11 +203,44 @@ export async function getOrCreateProfile(
   const { error: insertError } = await supabase.from("profiles").insert({
     id: user.id,
     email: user.email,
+    username: getDefaultUsername(user),
     credits_remaining: 3,
     is_pro: false,
+    plan: "free",
+    updated_at: new Date().toISOString(),
   });
 
   if (insertError) {
+    if (isMissingColumnError(insertError)) {
+      const { error: legacyInsertError } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          email: user.email,
+          credits_remaining: 3,
+          is_pro: false,
+        });
+
+      if (!legacyInsertError) {
+        const { data: legacyProfile, error: legacyRereadError } = await supabase
+          .from("profiles")
+          .select(legacyProfileColumns)
+          .eq("id", user.id)
+          .single<LegacyLinkPostProfile>();
+
+        if (!legacyRereadError && legacyProfile) {
+          return {
+            profile: normalizeLegacyProfile(legacyProfile),
+            error: null,
+          };
+        }
+
+        logSupabaseError("profiles.legacy_select_after_insert", legacyRereadError);
+      } else {
+        logSupabaseError("profiles.legacy_insert", legacyInsertError);
+      }
+    }
+
     logSupabaseError("profiles.insert", insertError);
     return {
       profile: null,
@@ -98,7 +263,7 @@ export async function getOrCreateProfile(
   }
 
   return {
-    profile: createdProfile,
+    profile: normalizeProfile(createdProfile),
     error: null,
   };
 }

@@ -26,7 +26,7 @@ function MissingSupabaseConfig() {
           </h1>
           <p className="mt-4 text-sm font-bold leading-7 text-slate-500">
             Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY
-            dans .env.local, puis relancez le serveur.
+            dans .env, puis relancez le serveur.
           </p>
         </div>
       </section>

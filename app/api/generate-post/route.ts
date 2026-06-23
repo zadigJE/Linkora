@@ -98,7 +98,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env.local",
+          "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env",
       },
       { status: 500 },
     );
@@ -148,7 +148,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Configuration IA manquante. Ajoutez OPENAI_API_KEY dans .env.local",
+          "Configuration IA manquante. Ajoutez OPENAI_API_KEY dans .env",
       },
       { status: 500 },
     );

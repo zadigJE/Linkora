@@ -17,7 +17,7 @@ async function getAuthenticatedClient() {
       error: NextResponse.json(
         {
           error:
-            "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env.local",
+            "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env",
         },
         { status: 500 },
       ),

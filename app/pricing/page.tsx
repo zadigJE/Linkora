@@ -12,11 +12,13 @@ const offers = [
     name: "Mensuel",
     price: "39€/mois",
     details: ["Tarif bloqué à vie"],
+    checkoutHref: "/api/whop/checkout?plan=mensuel",
   },
   {
     name: "Annuel recommandé",
     price: "349€/an",
     details: ["Revient à 29€/mois", "Tarif bloqué à vie"],
+    checkoutHref: "/api/whop/checkout?plan=annuel",
   },
 ];
 
@@ -112,7 +114,7 @@ export default function PricingPage() {
                 </ul>
               </div>
               <a
-                href="/auth"
+                href={offer.checkoutHref}
                 className="mt-auto inline-flex h-14 w-full items-center justify-center rounded-2xl bg-linkpost-blue px-6 text-[16px] font-extrabold text-white shadow-button transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 active:translate-y-px"
               >
                 Commencer maintenant

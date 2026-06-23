@@ -14,12 +14,17 @@ export default function AuthAccessForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  function getSafeNextPath() {
+    const nextPath = new URLSearchParams(window.location.search).get("next");
+    return nextPath?.startsWith("/") ? nextPath : "/dashboard";
+  }
+
   async function handleEmailAuth(formData: FormData) {
     setMessage("");
 
     if (!isSupabaseConfigured()) {
       setMessage(
-        "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env.local",
+        "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env",
       );
       return;
     }
@@ -53,7 +58,7 @@ export default function AuthAccessForm() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push(getSafeNextPath());
       router.refresh();
     } finally {
       setIsLoading(false);
@@ -65,7 +70,7 @@ export default function AuthAccessForm() {
 
     if (!isSupabaseConfigured()) {
       setMessage(
-        "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env.local",
+        "Configuration Supabase manquante. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY dans .env",
       );
       return;
     }
@@ -74,7 +79,9 @@ export default function AuthAccessForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(
+          getSafeNextPath(),
+        )}`,
       },
     });
 

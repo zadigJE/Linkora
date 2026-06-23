@@ -16,7 +16,7 @@ export function createWhopClient() {
 
   return new Whop({
     apiKey,
-    webhookKey: Buffer.from(webhookSecret, "utf8").toString("base64"),
+    webhookKey: webhookSecret,
   });
 }
 

@@ -1,15 +1,7 @@
 import { NextResponse } from "next/server";
-import {
-  createClient,
-  isServerSupabaseConfigured,
-} from "../../../../lib/supabase/server";
 import { getWhopPaymentLink } from "../../../../lib/whop/server";
 
 const validPlans = new Set(["mensuel", "annuel"]);
-
-function getSafeNext(plan: string) {
-  return `/api/whop/checkout?plan=${encodeURIComponent(plan)}`;
-}
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -17,23 +9,6 @@ export async function GET(request: Request) {
 
   if (!validPlans.has(plan)) {
     return NextResponse.redirect(new URL("/pricing", requestUrl.origin));
-  }
-
-  if (!isServerSupabaseConfigured()) {
-    const authUrl = new URL("/auth", requestUrl.origin);
-    authUrl.searchParams.set("next", getSafeNext(plan));
-    return NextResponse.redirect(authUrl);
-  }
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    const authUrl = new URL("/auth", requestUrl.origin);
-    authUrl.searchParams.set("next", getSafeNext(plan));
-    return NextResponse.redirect(authUrl);
   }
 
   const paymentLink = getWhopPaymentLink(plan);

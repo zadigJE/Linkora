@@ -204,7 +204,7 @@ export async function getOrCreateProfile(
     id: user.id,
     email: user.email,
     username: getDefaultUsername(user),
-    credits_remaining: 3,
+    credits_remaining: 1,
     is_pro: false,
     plan: "free",
     updated_at: new Date().toISOString(),
@@ -217,7 +217,7 @@ export async function getOrCreateProfile(
         .insert({
           id: user.id,
           email: user.email,
-          credits_remaining: 3,
+          credits_remaining: 1,
           is_pro: false,
         });
 

@@ -80,7 +80,7 @@ function LockedResult() {
           🔒 Plus de générations gratuites disponibles
         </h2>
         <p className="mx-auto mt-4 max-w-md text-[16px] font-medium leading-8 text-slate-600">
-          Vous avez utilisé vos 3 générations gratuites. Passez à Linkora
+          Vous avez utilisé votre 1 génération gratuite. Passez à Linkora
           Premium pour continuer à générer des posts LinkedIn qui attirent des
           prospects.
         </p>

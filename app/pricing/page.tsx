@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { ArrowLeft, Check, ChevronDown, Sparkles } from "lucide-react";
 import BrandLogo from "../../components/BrandLogo";
+import PricingOfferSelector from "../../components/PricingOfferSelector";
 import {
   createClient,
   isServerSupabaseConfigured,
@@ -10,21 +11,6 @@ export const metadata: Metadata = {
   title: "Pricing - Linkora.tech",
   description: "Offre Fondateur Linkora.",
 };
-
-const offers = [
-  {
-    name: "Mensuel",
-    price: "39€/mois",
-    details: ["Tarif bloqué à vie"],
-    checkoutHref: "/api/whop/checkout?plan=mensuel",
-  },
-  {
-    name: "Annuel recommandé",
-    price: "349€/an",
-    details: ["Revient à 29€/mois", "Tarif bloqué à vie"],
-    checkoutHref: "/api/whop/checkout?plan=annuel",
-  },
-];
 
 const benefits = [
   "Des posts LinkedIn structurés pour attirer des prospects.",
@@ -100,42 +86,7 @@ export default async function PricingPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          {offers.map((offer) => (
-            <article
-              key={offer.name}
-              className="flex min-h-[360px] flex-col rounded-[2rem] bg-white/95 p-7 text-left shadow-[0_22px_70px_rgba(15,23,42,0.09)] ring-1 ring-slate-100 backdrop-blur sm:p-8"
-            >
-              <div>
-                <h2 className="text-2xl font-extrabold text-slate-950">
-                  {offer.name}
-                </h2>
-                <p className="mt-5 text-[44px] font-extrabold leading-none text-slate-950 sm:text-[52px]">
-                  {offer.price}
-                </p>
-                <ul className="mt-7 space-y-4">
-                  {offer.details.map((detail) => (
-                    <li
-                      key={detail}
-                      className="flex items-center gap-3 text-[16px] font-extrabold text-slate-700"
-                    >
-                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-blue-50 text-linkpost-blue ring-1 ring-blue-100">
-                        <Check size={16} strokeWidth={2.7} />
-                      </span>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a
-                href={offer.checkoutHref}
-                className="mt-auto inline-flex h-14 w-full items-center justify-center rounded-2xl bg-linkpost-blue px-6 text-[16px] font-extrabold text-white shadow-button transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 active:translate-y-px"
-              >
-                Commencer maintenant
-              </a>
-            </article>
-          ))}
-        </div>
+        <PricingOfferSelector />
       </section>
 
       <section className="relative z-10 mx-auto w-full max-w-[1120px] py-16 sm:py-20">

@@ -6,7 +6,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text,
   username text,
-  credits_remaining integer not null default 3,
+  credits_remaining integer not null default 1,
   is_pro boolean not null default false,
   plan text not null default 'free',
   updated_at timestamp with time zone not null default now(),
@@ -99,7 +99,7 @@ begin
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'name', split_part(new.email, '@', 1)),
-    3,
+    1,
     false,
     'free'
   )

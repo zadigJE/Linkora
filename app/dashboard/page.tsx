@@ -97,7 +97,7 @@ export default async function DashboardPage() {
 
       <DashboardApp
         initialProfile={{
-          creditsRemaining: profile?.credits_remaining ?? 3,
+          creditsRemaining: profile?.credits_remaining ?? 1,
           isPro: profile?.is_pro ?? false,
           plan: profile?.plan ?? "free",
         }}

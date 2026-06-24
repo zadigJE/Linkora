@@ -33,6 +33,28 @@ create table if not exists public.generations (
   created_at timestamp with time zone not null default now()
 );
 
+update public.profiles profile
+set credits_remaining = 0,
+    updated_at = now()
+where profile.is_pro = false
+  and profile.credits_remaining > 0
+  and exists (
+    select 1
+    from public.generations generation
+    where generation.user_id = profile.id
+  );
+
+update public.profiles profile
+set credits_remaining = 1,
+    updated_at = now()
+where profile.is_pro = false
+  and profile.credits_remaining > 1
+  and not exists (
+    select 1
+    from public.generations generation
+    where generation.user_id = profile.id
+  );
+
 alter table public.profiles enable row level security;
 alter table public.generations enable row level security;
 

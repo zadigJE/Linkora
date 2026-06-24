@@ -118,6 +118,52 @@ function normalizeProfile(profile: LinkoraProfile): LinkoraProfile {
   };
 }
 
+async function normalizeFreeCredits(
+  supabase: SupabaseServerClient,
+  profile: LinkoraProfile,
+) {
+  if (profile.is_pro || profile.credits_remaining <= 0) {
+    return normalizeProfile(profile);
+  }
+
+  const { count, error: countError } = await supabase
+    .from("generations")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", profile.id);
+
+  if (countError) {
+    logSupabaseError("generations.count_for_credit_normalization", countError);
+  }
+
+  const nextCredits =
+    count && count > 0 ? 0 : Math.min(profile.credits_remaining, 1);
+
+  if (nextCredits === profile.credits_remaining) {
+    return normalizeProfile(profile);
+  }
+
+  const { data: updatedProfile, error: updateError } = await supabase
+    .from("profiles")
+    .update({
+      credits_remaining: nextCredits,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", profile.id)
+    .select(profileColumns)
+    .single<LinkoraProfile>();
+
+  if (!updateError && updatedProfile) {
+    return normalizeProfile(updatedProfile);
+  }
+
+  logSupabaseError("profiles.normalize_free_credits", updateError);
+
+  return normalizeProfile({
+    ...profile,
+    credits_remaining: nextCredits,
+  });
+}
+
 export async function getOrCreateProfile(
   supabase: SupabaseServerClient,
   user: User,
@@ -186,7 +232,7 @@ export async function getOrCreateProfile(
 
       if (!updateError && updatedProfile) {
         return {
-          profile: normalizeProfile(updatedProfile),
+          profile: await normalizeFreeCredits(supabase, updatedProfile),
           error: null,
         };
       }
@@ -195,7 +241,7 @@ export async function getOrCreateProfile(
     }
 
     return {
-      profile: normalizeProfile(existingProfile),
+      profile: await normalizeFreeCredits(supabase, existingProfile),
       error: null,
     };
   }

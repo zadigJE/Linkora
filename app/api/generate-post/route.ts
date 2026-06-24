@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import {
   createClient,
   isServerSupabaseConfigured,
@@ -134,7 +134,7 @@ export async function POST(request: Request) {
   if (!profile.is_pro && profile.credits_remaining <= 0) {
     return NextResponse.json(
       {
-        error: "Crédits épuisés. Passe à LinkPost Pro pour continuer.",
+        error: "Crédits épuisés. Passe à Linkora Pro pour continuer.",
         creditsRemaining: 0,
         isPro: false,
       },

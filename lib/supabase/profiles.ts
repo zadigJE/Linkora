@@ -1,22 +1,22 @@
-import type { User } from "@supabase/supabase-js";
+﻿import type { User } from "@supabase/supabase-js";
 import type { createClient } from "./server";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
-export type LinkPostPlan = "free" | "founder" | "pro";
+export type LinkoraPlan = "free" | "founder" | "pro";
 
-export type LinkPostProfile = {
+export type LinkoraProfile = {
   id: string;
   email: string | null;
   username: string | null;
   credits_remaining: number;
   is_pro: boolean;
-  plan: LinkPostPlan;
+  plan: LinkoraPlan;
   created_at: string;
   updated_at: string | null;
 };
 
-type LegacyLinkPostProfile = {
+type LegacyLinkoraProfile = {
   id: string;
   email: string | null;
   credits_remaining: number;
@@ -26,7 +26,7 @@ type LegacyLinkPostProfile = {
 
 type ProfileResult =
   | {
-      profile: LinkPostProfile;
+      profile: LinkoraProfile;
       error: null;
     }
   | {
@@ -60,7 +60,7 @@ export function logSupabaseError(
   });
 }
 
-export function normalizePlan(plan: string | null | undefined): LinkPostPlan {
+export function normalizePlan(plan: string | null | undefined): LinkoraPlan {
   if (plan === "founder" || plan === "pro") {
     return plan;
   }
@@ -68,7 +68,7 @@ export function normalizePlan(plan: string | null | undefined): LinkPostPlan {
   return "free";
 }
 
-export function getPlanLabel(profile: Pick<LinkPostProfile, "is_pro" | "plan">) {
+export function getPlanLabel(profile: Pick<LinkoraProfile, "is_pro" | "plan">) {
   if (profile.plan === "pro") {
     return "Pro";
   }
@@ -99,8 +99,8 @@ function isMissingColumnError(error: SupabaseErrorLike | null | undefined) {
 }
 
 function normalizeLegacyProfile(
-  profile: LegacyLinkPostProfile,
-): LinkPostProfile {
+  profile: LegacyLinkoraProfile,
+): LinkoraProfile {
   return normalizeProfile({
     ...profile,
     username: null,
@@ -109,7 +109,7 @@ function normalizeLegacyProfile(
   });
 }
 
-function normalizeProfile(profile: LinkPostProfile): LinkPostProfile {
+function normalizeProfile(profile: LinkoraProfile): LinkoraProfile {
   const plan = normalizePlan(profile.plan);
 
   return {
@@ -126,7 +126,7 @@ export async function getOrCreateProfile(
     .from("profiles")
     .select(profileColumns)
     .eq("id", user.id)
-    .maybeSingle<LinkPostProfile>();
+    .maybeSingle<LinkoraProfile>();
 
   if (readError) {
     if (isMissingColumnError(readError)) {
@@ -134,7 +134,7 @@ export async function getOrCreateProfile(
         .from("profiles")
         .select(legacyProfileColumns)
         .eq("id", user.id)
-        .maybeSingle<LegacyLinkPostProfile>();
+        .maybeSingle<LegacyLinkoraProfile>();
 
       if (!legacyReadError && legacyProfile) {
         return {
@@ -156,7 +156,7 @@ export async function getOrCreateProfile(
     logSupabaseError("profiles.select", readError);
     return {
       profile: null,
-      error: "Impossible de lire ton profil LinkPost.",
+      error: "Impossible de lire ton profil Linkora.",
     };
   }
 
@@ -182,7 +182,7 @@ export async function getOrCreateProfile(
         })
         .eq("id", user.id)
         .select(profileColumns)
-        .single<LinkPostProfile>();
+        .single<LinkoraProfile>();
 
       if (!updateError && updatedProfile) {
         return {
@@ -226,7 +226,7 @@ export async function getOrCreateProfile(
           .from("profiles")
           .select(legacyProfileColumns)
           .eq("id", user.id)
-          .single<LegacyLinkPostProfile>();
+          .single<LegacyLinkoraProfile>();
 
         if (!legacyRereadError && legacyProfile) {
           return {
@@ -252,7 +252,7 @@ export async function getOrCreateProfile(
     .from("profiles")
     .select(profileColumns)
     .eq("id", user.id)
-    .single<LinkPostProfile>();
+    .single<LinkoraProfile>();
 
   if (rereadError) {
     logSupabaseError("profiles.select_after_insert", rereadError);

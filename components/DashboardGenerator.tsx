@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   Check,
@@ -42,7 +42,7 @@ function LockedResult() {
           🔒 Plus de générations gratuites disponibles
         </h2>
         <p className="mx-auto mt-4 max-w-md text-[16px] font-medium leading-8 text-slate-600">
-          Vous avez utilisé vos 3 générations gratuites. Passez à Linkaro
+          Vous avez utilisé vos 3 générations gratuites. Passez à Linkora
           Premium pour continuer à générer des posts LinkedIn qui attirent des
           prospects.
         </p>
@@ -316,7 +316,7 @@ export default function DashboardGenerator({
             Crée ton premier post LinkedIn
           </h1>
           <p className="mt-4 max-w-2xl text-[16px] font-medium leading-8 text-slate-600 sm:text-[18px]">
-            Décris ton activité, ton offre ou ton audience. LinkPost génère un
+            Décris ton activité, ton offre ou ton audience. Linkora génère un
             post optimisé pour attirer des prospects.
           </p>
         </div>

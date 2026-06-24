@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 import AuthAccessForm from "../../components/AuthAccessForm";
@@ -9,8 +9,8 @@ import {
 } from "../../lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Connexion - LinkPost.tech",
-  description: "Connectez-vous ou créez votre compte LinkPost gratuitement.",
+  title: "Connexion - Linkora.tech",
+  description: "Connectez-vous ou créez votre compte Linkora gratuitement.",
 };
 
 function getSafeNextPath(nextPath: string | string[] | undefined) {
@@ -46,7 +46,7 @@ export default async function AuthPage({
         <a
           href="/"
           className="inline-flex"
-          aria-label="Retour à l'accueil Linkaro"
+          aria-label="Retour à l'accueil Linkora"
         >
           <BrandLogo imageClassName="h-8 w-auto sm:h-9" />
         </a>
@@ -62,7 +62,7 @@ export default async function AuthPage({
       <section className="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-[1120px] items-center justify-center py-12 lg:py-16">
         <div className="w-full max-w-[500px] rounded-[2rem] bg-white/95 p-6 text-center shadow-[0_30px_100px_rgba(37,99,235,0.18),0_16px_50px_rgba(15,23,42,0.10)] ring-1 ring-white/90 backdrop-blur sm:p-8">
           <h1 className="text-[34px] font-extrabold leading-tight text-slate-950 sm:text-[42px]">
-            Connecte-toi à LinkPost
+            Connecte-toi à Linkora
           </h1>
           <p className="mx-auto mt-3 max-w-sm text-[16px] font-semibold leading-7 text-slate-500">
             Crée ton premier post LinkedIn en 30 secondes.

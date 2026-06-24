@@ -1,4 +1,4 @@
-type BrandLogoProps = {
+﻿type BrandLogoProps = {
   className?: string;
   imageClassName?: string;
 };
@@ -11,7 +11,7 @@ export default function BrandLogo({
     <span className={`inline-flex items-center ${className}`}>
       <img
         src="/linkaro-logo.png"
-        alt="Linkaro"
+        alt="Linkora"
         width={400}
         height={341}
         className={`block object-contain ${imageClassName}`}

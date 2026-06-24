@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "LinkPost.tech - Posts LinkedIn optimises",
+  title: "Linkora.tech - Posts LinkedIn optimises",
   description:
     "Cree des posts LinkedIn optimises pour attirer des prospects qualifies.",
 };

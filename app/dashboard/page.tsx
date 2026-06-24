@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import DashboardApp from "../../components/DashboardApp";
 import {
@@ -8,8 +8,8 @@ import {
 import { getOrCreateProfile } from "../../lib/supabase/profiles";
 
 export const metadata: Metadata = {
-  title: "Dashboard - LinkPost.tech",
-  description: "Générez votre premier post LinkedIn avec LinkPost.",
+  title: "Dashboard - Linkora.tech",
+  description: "Générez votre premier post LinkedIn avec Linkora.",
 };
 
 function MissingSupabaseConfig() {
@@ -43,7 +43,7 @@ function ProfileSetupError({ message }: { message: string }) {
       <section className="relative z-10 mx-auto flex min-h-screen max-w-xl items-center justify-center">
         <div className="rounded-[2rem] bg-white/95 p-8 text-center shadow-[0_30px_100px_rgba(37,99,235,0.18),0_16px_50px_rgba(15,23,42,0.10)] ring-1 ring-white/90">
           <h1 className="text-3xl font-extrabold text-slate-950">
-            Profil LinkPost indisponible
+            Profil Linkora indisponible
           </h1>
           <p className="mt-4 text-sm font-bold leading-7 text-slate-500">
             {message}

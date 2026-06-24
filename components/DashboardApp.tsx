@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -53,7 +53,7 @@ export default function DashboardApp({
           <a
             href="/"
             className="inline-flex"
-            aria-label="Retour à l'accueil Linkaro"
+            aria-label="Retour à l'accueil Linkora"
           >
             <BrandLogo imageClassName="h-10 w-auto" />
           </a>
@@ -83,7 +83,7 @@ export default function DashboardApp({
             href="/settings"
             className="rounded-[1rem] px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
           >
-            Profil / Paramètres
+            Profil / Paramêtres
           </a>
           <a
             href="/pricing"
@@ -122,7 +122,7 @@ export default function DashboardApp({
           <a
             href="/"
             className="inline-flex"
-            aria-label="Retour à l'accueil Linkaro"
+            aria-label="Retour à l'accueil Linkora"
           >
             <BrandLogo imageClassName="h-8 w-auto" />
           </a>
@@ -151,7 +151,7 @@ export default function DashboardApp({
             href="/settings"
             className="rounded-full px-3 py-2.5 text-center text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
           >
-            Paramètres
+            Paramêtres
           </a>
           <a
             href="/pricing"

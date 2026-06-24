@@ -1,7 +1,5 @@
-import {
-  BookOpen,
+﻿import {
   ChevronDown,
-  FileText,
   Lightbulb,
   Menu,
   MessageSquareText,
@@ -9,7 +7,6 @@ import {
   Rocket,
   Sparkles,
   Target,
-  Zap,
 } from "lucide-react";
 import AuthPromptForm from "../components/AuthPromptForm";
 import BrandLogo from "../components/BrandLogo";
@@ -23,7 +20,6 @@ const navLinks = [
   { label: "Comment ça marche", href: "#comment-ca-marche" },
   { label: "Tarifs", href: "/pricing" },
   { label: "FAQ", href: "#faq" },
-  { label: "Ressources", href: "#ressources" },
 ];
 
 const heroAvatarIndexes = [0, 1, 2, 3, 4];
@@ -35,7 +31,7 @@ const cardBadges = [
     className: "border-red-100 bg-red-500 text-white shadow-red-200/70",
   },
   {
-    label: "Avec LinkPost",
+    label: "Avec Linkora",
     className: "border-green-100 bg-emerald-500 text-white shadow-emerald-200/70",
   },
   {
@@ -54,7 +50,7 @@ const testimonials = [
     role: "Consultant Marketing",
     avatarIndex: 0,
     quote:
-      "Grâce à LinkPost je publie beaucoup plus régulièrement. J'ai obtenu plusieurs rendez-vous qualifiés en quelques semaines.",
+      "Grâce à Linkora je publie beaucoup plus régulièrement. J'ai obtenu plusieurs rendez-vous qualifiés en quelques semaines.",
   },
   {
     name: "Camille R.",
@@ -82,7 +78,7 @@ const testimonials = [
     role: "Consultante RH",
     avatarIndex: 5,
     quote:
-      "LinkPost m'aide à transformer mes idées en contenus clairs, utiles et orientés acquisition.",
+      "Linkora m'aide à transformer mes idées en contenus clairs, utiles et orientés acquisition.",
   },
   {
     name: "Marc T.",
@@ -129,7 +125,7 @@ const howItWorksSteps = [
   },
   {
     icon: Sparkles,
-    title: "LinkPost génère ton contenu",
+    title: "Linkora génère ton contenu",
     text: "Notre IA crée un post LinkedIn optimisé pour attirer des prospects.",
   },
   {
@@ -153,31 +149,13 @@ const featureCards = [
   {
     icon: Target,
     title: "Ton adapté à ton marché",
-    text: "LinkPost ajuste le style selon ton activité, ton audience et ton niveau d'expertise.",
-  },
-];
-
-const resourceCards = [
-  {
-    icon: BookOpen,
-    title: "Guides LinkedIn",
-    text: "Des repères simples pour publier plus souvent sans repartir d'une page blanche.",
-  },
-  {
-    icon: FileText,
-    title: "Templates de posts",
-    text: "Des structures réutilisables pour présenter une offre, raconter un cas client ou lancer une discussion.",
-  },
-  {
-    icon: Zap,
-    title: "Bonnes pratiques",
-    text: "Des conseils courts pour améliorer la clarté, le rythme et la conversion de tes publications.",
+    text: "Linkora ajuste le style selon ton activité, ton audience et ton niveau d'expertise.",
   },
 ];
 
 const faqs = [
   {
-    question: "LinkPost est-il gratuit ?",
+    question: "Linkora est-il gratuit ?",
     answer: "Oui, vous pouvez commencer gratuitement.",
   },
   {
@@ -189,14 +167,14 @@ const faqs = [
     answer: "Oui, vous pouvez modifier le texte avant publication.",
   },
   {
-    question: "LinkPost fonctionne-t-il pour tous les secteurs ?",
+    question: "Linkora fonctionne-t-il pour tous les secteurs ?",
     answer:
       "Oui, freelances, agences, consultants, coachs, SaaS, e-commerce et bien d'autres.",
   },
   {
     question: "Dois-je avoir de l'expérience sur LinkedIn ?",
     answer:
-      "Non. LinkPost est conçu aussi bien pour les débutants que pour les utilisateurs avancés.",
+      "Non. Linkora est conçu aussi bien pour les débutants que pour les utilisateurs avancés.",
   },
   {
     question: "Mes données sont-elles sécurisées ?",
@@ -239,7 +217,7 @@ function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
       <a
         href="/"
         className="shrink-0 lg:px-3"
-        aria-label="Linkaro accueil"
+        aria-label="Linkora accueil"
       >
         <BrandLogo imageClassName="h-8 w-auto sm:h-9" />
       </a>
@@ -262,12 +240,6 @@ function Header({ isAuthenticated }: { isAuthenticated: boolean }) {
           className="rounded-full px-4 py-2.5 text-sm font-extrabold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
         >
           {isAuthenticated ? "Dashboard" : "Se connecter"}
-        </a>
-        <a
-          href={isAuthenticated ? "/dashboard" : "/auth"}
-          className="rounded-full bg-linkpost-blue px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(59,130,246,0.28)] transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 active:translate-y-px"
-        >
-          {isAuthenticated ? "Dashboard" : "Commencer gratuitement"}
         </a>
       </div>
 
@@ -300,7 +272,7 @@ function SocialProofBadge({ className = "" }: ClassNameProps) {
         <span className="block font-extrabold text-slate-950">
           +8 000 professionnels
         </span>
-        <span>utilisent LinkPost chaque jour</span>
+        <span>utilisent Linkora chaque jour</span>
       </p>
     </div>
   );
@@ -496,7 +468,7 @@ function TestimonialsSection() {
     <section id="avis" className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
         title="Avis de nos utilisateurs"
-        subtitle="DÃ©couvrez comment entrepreneurs, freelances et agences utilisent LinkPost pour gÃ©nÃ©rer davantage de prospects sur LinkedIn."
+        subtitle="Découvrez comment entrepreneurs, freelances et agences utilisent Linkora pour générer davantage de prospects sur LinkedIn."
       />
 
       <div className="testimonial-carousel relative mt-12 overflow-hidden">
@@ -593,8 +565,8 @@ function ComparisonSection() {
   return (
     <section className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
-        title="ChatGPT vs Linkaro"
-        subtitle="Pourquoi Linkaro est plus adapté à la création de posts LinkedIn qui génèrent des prospects."
+        title="ChatGPT vs Linkora"
+        subtitle="Pourquoi Linkora est plus adapté à la création de posts LinkedIn qui génèrent des prospects."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
@@ -611,7 +583,7 @@ function ComparisonSection() {
 
         <article className="rounded-[2rem] border-2 border-emerald-200 bg-white/92 p-7 shadow-[0_18px_55px_rgba(15,23,42,0.08)]">
           <h3 className="text-2xl font-extrabold text-slate-950">
-            Linkaro
+            Linkora
           </h3>
           <ul className="mt-6 space-y-4 text-[16px] font-medium leading-8 text-slate-600">
             <li>Posts pensés dès le départ pour LinkedIn et l'acquisition.</li>
@@ -656,40 +628,6 @@ function FaqSection() {
   );
 }
 
-function ResourcesSection() {
-  return (
-    <section id="ressources" className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
-      <SectionHeading
-        title="Ressources"
-        subtitle="Des repères courts pour publier plus vite, plus clairement et avec plus d'impact."
-      />
-
-      <div className="mt-12 grid gap-5 lg:grid-cols-3">
-        {resourceCards.map((resource) => {
-          const Icon = resource.icon;
-
-          return (
-            <article
-              key={resource.title}
-              className="rounded-[2rem] bg-white/92 p-7 shadow-[0_18px_55px_rgba(15,23,42,0.08)] ring-1 ring-slate-100"
-            >
-              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-blue-50 text-linkpost-blue">
-                <Icon size={26} strokeWidth={2.4} />
-              </div>
-              <h3 className="mt-8 text-2xl font-extrabold text-slate-950">
-                {resource.title}
-              </h3>
-              <p className="mt-4 text-[16px] font-medium leading-8 text-slate-600">
-                {resource.text}
-              </p>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
 function Footer() {
   return (
     <footer className="relative z-10 border-t border-slate-200/70 py-10">
@@ -698,7 +636,7 @@ function Footer() {
           <a
             href="#"
             className="inline-flex"
-            aria-label="Linkaro accueil"
+            aria-label="Linkora accueil"
           >
             <BrandLogo imageClassName="h-10 w-auto" />
           </a>
@@ -717,7 +655,7 @@ function Footer() {
               {link.label}
             </a>
           ))}
-          <a className="transition hover:text-linkpost-blue" href="mailto:contact@linkpost.tech">
+          <a className="transition hover:text-linkpost-blue" href="mailto:contact@linkora.tech">
             Contact
           </a>
         </nav>
@@ -759,7 +697,6 @@ export default async function Home() {
         <HowItWorksSection />
         <ComparisonSection />
         <FaqSection />
-        <ResourcesSection />
       </div>
       <Footer />
     </div>

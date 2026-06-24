@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { ArrowLeft, Check, ChevronDown, Sparkles } from "lucide-react";
 import BrandLogo from "../../components/BrandLogo";
 import {
@@ -7,8 +7,8 @@ import {
 } from "../../lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Pricing - LinkPost.tech",
-  description: "Offre Fondateur Linkaro.",
+  title: "Pricing - Linkora.tech",
+  description: "Offre Fondateur Linkora.",
 };
 
 const offers = [
@@ -29,7 +29,6 @@ const offers = [
 const benefits = [
   "Des posts LinkedIn structurés pour attirer des prospects.",
   "Un générateur pensé pour l'acquisition, pas seulement la visibilité.",
-  "Une base claire pour publier plus vite et plus régulièrement.",
   "Un tarif fondateur conservé à vie pour les 50 premiers utilisateurs.",
 ];
 
@@ -37,7 +36,7 @@ const faqs = [
   {
     question: "Que comprend l'offre fondateur ?",
     answer:
-      "Elle donne accès à Linkaro Premium au tarif fondateur, avec un prix conservé à vie pour les 50 premiers utilisateurs.",
+      "Elle donne accès à Linkora Premium au tarif fondateur, avec un prix conservé à vie pour les 50 premiers utilisateurs.",
   },
   {
     question: "Puis-je choisir entre mensuel et annuel ?",
@@ -50,9 +49,9 @@ const faqs = [
       "Oui. Les 50 premiers utilisateurs conserveront ce tarif à vie.",
   },
   {
-    question: "Linkaro est-il adapté à mon activité ?",
+    question: "Linkora est-il adapté à mon activité ?",
     answer:
-      "Linkaro est conçu pour les indépendants, consultants, agences, coachs et entreprises qui veulent créer des posts LinkedIn orientés prospects.",
+      "Linkora est conçu pour les indépendants, consultants, agences, coachs et entreprises qui veulent créer des posts LinkedIn orientés prospects.",
   },
 ];
 
@@ -75,7 +74,7 @@ export default async function PricingPage() {
       <div className="pointer-events-none absolute bottom-[-24rem] right-[-12rem] h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.18),rgba(255,255,255,0)_68%)] blur-2xl" />
 
       <header className="relative z-10 mx-auto flex w-full max-w-[1120px] items-center justify-between rounded-full border border-white/70 bg-white/[0.84] px-5 py-3.5 shadow-[0_18px_60px_rgba(15,23,42,0.10)] ring-1 ring-white/70 backdrop-blur-xl">
-        <a href="/" className="inline-flex" aria-label="Linkaro accueil">
+        <a href="/" className="inline-flex" aria-label="Linkora accueil">
           <BrandLogo imageClassName="h-8 w-auto sm:h-9" />
         </a>
         <a
@@ -143,7 +142,7 @@ export default async function PricingPage() {
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
           <div>
             <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-linkpost-blue">
-              Pourquoi Linkaro ?
+              Pourquoi Linkora ?
             </p>
             <h2 className="mt-4 text-[34px] font-extrabold leading-tight text-slate-950 sm:text-[44px]">
               Créez des posts LinkedIn plus orientés prospects.

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -63,7 +63,7 @@ export default function SettingsForm({ profile }: SettingsFormProps) {
       }
 
       setUsername(nextUsername);
-      setMessage("Paramètres sauvegardés.");
+      setMessage("Paramêtres sauvegardés.");
       router.refresh();
     } finally {
       setIsSaving(false);
@@ -78,7 +78,7 @@ export default function SettingsForm({ profile }: SettingsFormProps) {
             Profil
           </p>
           <h1 className="mt-3 text-[34px] font-extrabold leading-tight text-slate-950 sm:text-[44px]">
-            Paramètres du compte
+            Paramêtres du compte
           </h1>
         </div>
 

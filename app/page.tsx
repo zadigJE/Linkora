@@ -8,8 +8,10 @@
   Sparkles,
   Target,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 import AuthPromptForm from "../components/AuthPromptForm";
 import BrandLogo from "../components/BrandLogo";
+import LandingSessionRedirect from "../components/LandingSessionRedirect";
 import {
   createClient,
   isServerSupabaseConfigured,
@@ -681,8 +683,13 @@ export default async function Home() {
     isAuthenticated = Boolean(user);
   }
 
+  if (isAuthenticated) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className="relative min-h-screen overflow-x-hidden px-4 pt-3 sm:px-6 sm:pt-8 lg:px-8">
+      <LandingSessionRedirect />
       <div className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(180deg,rgba(219,234,254,0.74)_0%,rgba(239,246,255,0.92)_35%,rgba(255,255,255,0.96)_100%)] lg:block" />
       <div className="pointer-events-none absolute left-1/2 top-0 hidden h-[520px] w-[1200px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.34),rgba(191,219,254,0.20)_48%,rgba(255,255,255,0)_72%)] blur-3xl lg:block" />
       <div className="pointer-events-none absolute bottom-[-26rem] left-1/2 hidden h-[700px] w-[980px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.13),rgba(255,255,255,0)_68%)] blur-2xl lg:block" />

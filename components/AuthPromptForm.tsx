@@ -60,7 +60,7 @@ export default function AuthPromptForm({
         id={inputId}
         name="activity"
         rows={rows}
-        placeholder="Décris ton activité en une phrase..."
+        placeholder="Décrivez votre activité ou votre idée en une phrase..."
         className={textareaClassName}
       />
 

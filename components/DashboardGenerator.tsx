@@ -31,6 +31,44 @@ type Generation = {
   created_at: string;
 };
 
+type GenerationMode = "generate" | "improve";
+type PostType = "storytelling" | "expertise" | "opinion" | "case_study";
+
+const modeOptions: Array<{
+  value: GenerationMode;
+  label: string;
+}> = [
+  { value: "generate", label: "Générer un post" },
+  { value: "improve", label: "Améliorer un post existant" },
+];
+
+const postTypeOptions: Array<{
+  value: PostType;
+  label: string;
+  description: string;
+}> = [
+  {
+    value: "storytelling",
+    label: "Storytelling",
+    description: "Histoire, expérience, apprentissage",
+  },
+  {
+    value: "expertise",
+    label: "Autorité / Expertise",
+    description: "Conseils, crédibilité, expertise",
+  },
+  {
+    value: "opinion",
+    label: "Opinion / Prise de position",
+    description: "Avis fort, angle, débat",
+  },
+  {
+    value: "case_study",
+    label: "Étude de cas",
+    description: "Résultat, analyse, exemple concret",
+  },
+];
+
 function LockedResult() {
   return (
     <article className="mx-auto mt-8 flex min-h-[320px] max-w-3xl items-center justify-center rounded-[1.75rem] bg-slate-50/80 p-5 text-center shadow-[inset_0_0_0_1px_rgba(226,232,240,0.9)] sm:p-7">
@@ -64,6 +102,9 @@ export default function DashboardGenerator({
   onProfileChange,
 }: DashboardGeneratorProps) {
   const [activity, setActivity] = useState("");
+  const [generationMode, setGenerationMode] =
+    useState<GenerationMode>("generate");
+  const [postType, setPostType] = useState<PostType>("storytelling");
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
   const [hasLockedResult, setHasLockedResult] = useState(false);
@@ -103,7 +144,11 @@ export default function DashboardGenerator({
     }
 
     if (!trimmedActivity) {
-      setError("Décris ton activité avant de générer ton post.");
+      setError(
+        generationMode === "improve"
+          ? "Colle ton brouillon avant de l'améliorer."
+          : "Décrivez votre activité ou votre idée avant de générer votre post.",
+      );
       setResult("");
       setHasLockedResult(false);
       textareaRef.current?.focus();
@@ -126,7 +171,11 @@ export default function DashboardGenerator({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ activity: trimmedActivity }),
+        body: JSON.stringify({
+          activity: trimmedActivity,
+          mode: generationMode,
+          postType,
+        }),
       });
 
       const data = await response.json();
@@ -303,6 +352,19 @@ export default function DashboardGenerator({
     }).format(new Date(date));
   }
 
+  const textareaLabel =
+    generationMode === "improve"
+      ? "Colle ton brouillon LinkedIn"
+      : "Décrivez votre activité ou votre idée en une phrase";
+  const textareaPlaceholder =
+    generationMode === "improve"
+      ? "Colle ici ton brouillon LinkedIn. Linkora le reformule sans changer le sujet, le message ni l'idée..."
+      : "Décrivez votre activité ou votre idée en une phrase...";
+  const submitLabel =
+    generationMode === "improve"
+      ? "Améliorer le post"
+      : "Générer le post";
+
   return (
     <>
       <div className="mx-auto w-full max-w-[1180px] space-y-6">
@@ -316,14 +378,65 @@ export default function DashboardGenerator({
             Crée ton premier post LinkedIn
           </h1>
           <p className="mt-4 max-w-2xl text-[16px] font-medium leading-8 text-slate-600 sm:text-[18px]">
-            Décris ton activité, ton offre ou ton audience. Linkora génère un
-            post optimisé pour attirer des prospects.
+            Choisis un type de post ou colle un brouillon. Linkora génère ou
+            améliore un post LinkedIn optimisé pour attirer des prospects.
           </p>
         </div>
 
         <div className="mt-8 max-w-3xl">
+          <div className="grid gap-5">
+            <div>
+              <p className="text-sm font-extrabold text-slate-700">Mode</p>
+              <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                {modeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setGenerationMode(option.value)}
+                    className={`rounded-2xl px-4 py-3 text-sm font-extrabold transition ring-1 ${
+                      generationMode === option.value
+                        ? "bg-linkpost-blue text-white ring-linkpost-blue shadow-[0_12px_28px_rgba(59,130,246,0.20)]"
+                        : "bg-slate-50 text-slate-600 ring-slate-100 hover:bg-white hover:text-slate-950"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {generationMode === "generate" ? (
+              <div>
+                <p className="text-sm font-extrabold text-slate-700">
+                  Type de post
+                </p>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  {postTypeOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setPostType(option.value)}
+                      className={`rounded-2xl px-4 py-3 text-left transition ring-1 ${
+                        postType === option.value
+                          ? "bg-blue-50 text-linkpost-blue ring-blue-100"
+                          : "bg-slate-50 text-slate-600 ring-slate-100 hover:bg-white hover:text-slate-950"
+                      }`}
+                    >
+                      <span className="block text-sm font-extrabold">
+                        {option.label}
+                      </span>
+                      <span className="mt-1 block text-xs font-bold leading-5 text-slate-500">
+                        {option.description}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+
           <label className="sr-only" htmlFor="dashboard-activity">
-            Décris ton activité, ton offre ou ton audience
+            {textareaLabel}
           </label>
           <textarea
             ref={textareaRef}
@@ -331,8 +444,8 @@ export default function DashboardGenerator({
             value={activity}
             onChange={(event) => setActivity(event.target.value)}
             rows={5}
-            placeholder="Exemple : J’aide les e-commerçants à augmenter leur ROAS avec Meta Ads…"
-            className="min-h-[180px] w-full resize-none rounded-[2rem] border border-white/80 bg-white px-6 py-6 text-[18px] font-medium leading-8 text-slate-900 shadow-[0_22px_70px_rgba(37,99,235,0.14),0_10px_30px_rgba(15,23,42,0.07)] outline-none ring-1 ring-slate-100 transition placeholder:text-slate-400 focus:border-blue-200 focus:ring-4 focus:ring-blue-100 sm:px-8"
+            placeholder={textareaPlaceholder}
+            className="mt-5 min-h-[180px] w-full resize-none rounded-[2rem] border border-white/80 bg-white px-6 py-6 text-[18px] font-medium leading-8 text-slate-900 shadow-[0_22px_70px_rgba(37,99,235,0.14),0_10px_30px_rgba(15,23,42,0.07)] outline-none ring-1 ring-slate-100 transition placeholder:text-slate-400 focus:border-blue-200 focus:ring-4 focus:ring-blue-100 sm:px-8"
           />
 
           <button
@@ -347,7 +460,7 @@ export default function DashboardGenerator({
                 Génération en cours…
               </>
             ) : (
-              "Générer le post"
+              submitLabel
             )}
           </button>
 

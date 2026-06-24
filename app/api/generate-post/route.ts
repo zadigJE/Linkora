@@ -8,8 +8,45 @@ import {
   logSupabaseError,
 } from "../../../lib/supabase/profiles";
 
-const LINKEDIN_PROMPT = `Tu es un expert LinkedIn B2B.
-À partir de l'activité de l'utilisateur, génère un post LinkedIn en français qui attire des prospects qualifiés.
+const postTypes = {
+  storytelling: {
+    label: "Storytelling",
+    instructions:
+      "Construis une histoire personnelle ou professionnelle avec contexte, tension, expérience vécue, apprentissage clair et lien naturel vers le problème du prospect.",
+  },
+  expertise: {
+    label: "Autorité / Expertise",
+    instructions:
+      "Partage une expertise concrète avec conseils actionnables, raisonnement clair, crédibilité et exemples utiles pour aider un prospect à mieux décider.",
+  },
+  opinion: {
+    label: "Opinion / Prise de position",
+    instructions:
+      "Défends un avis fort avec un angle différenciant, une position assumée, un contraste avec les idées reçues et une ouverture au débat.",
+  },
+  case_study: {
+    label: "Étude de cas",
+    instructions:
+      "Présente un exemple concret avec situation de départ, action menée, résultat, analyse et enseignement applicable par le prospect.",
+  },
+} as const;
+
+type PostType = keyof typeof postTypes;
+type GenerationMode = "generate" | "improve";
+
+function getGenerationMode(value: unknown): GenerationMode {
+  return value === "improve" ? "improve" : "generate";
+}
+
+function getPostType(value: unknown): PostType {
+  return typeof value === "string" && value in postTypes
+    ? (value as PostType)
+    : "storytelling";
+}
+
+function buildLinkedInPrompt(mode: GenerationMode, postType: PostType) {
+  const basePrompt = `Tu es un expert LinkedIn B2B.
+Ton objectif principal est de créer des posts LinkedIn en français qui attirent des prospects qualifiés.
 
 Le post doit :
 - commencer par un hook fort
@@ -21,6 +58,25 @@ Le post doit :
 - rester entre 900 et 1300 caractères
 - utiliser des sauts de ligne courts
 - ne pas utiliser trop d'emojis`;
+
+  if (mode === "improve") {
+    return `${basePrompt}
+
+Mode : Améliorer un post existant.
+Reformule complètement le brouillon fourni pour en faire une meilleure version LinkedIn.
+Conserve exactement le même sujet, le même message et la même idée.
+Ne change pas l'intention de l'auteur.
+Améliore la clarté, la structure, le hook, le rythme, la valeur perçue et le CTA tout en gardant le fond identique.`;
+  }
+
+  const type = postTypes[postType];
+
+  return `${basePrompt}
+
+Type de post : ${type.label}.
+Logique spécifique :
+${type.instructions}`;
+}
 
 function extractText(response: unknown): string {
   if (
@@ -86,10 +142,23 @@ export async function POST(request: Request) {
     typeof body.activity === "string"
       ? body.activity.trim()
       : "";
+  const mode =
+    body && typeof body === "object" && "mode" in body
+      ? getGenerationMode(body.mode)
+      : "generate";
+  const postType =
+    body && typeof body === "object" && "postType" in body
+      ? getPostType(body.postType)
+      : "storytelling";
 
   if (!activity) {
     return NextResponse.json(
-      { error: "Décris ton activité avant de générer ton post." },
+      {
+        error:
+          mode === "improve"
+            ? "Colle ton brouillon avant de l'améliorer."
+            : "Décrivez votre activité ou votre idée avant de générer votre post.",
+      },
       { status: 400 },
     );
   }
@@ -155,6 +224,12 @@ export async function POST(request: Request) {
   }
 
   try {
+    const instructions = buildLinkedInPrompt(mode, postType);
+    const input =
+      mode === "improve"
+        ? `Brouillon LinkedIn à améliorer sans changer le sujet, le message ni l'idée :\n${activity}`
+        : `Activité ou idée utilisateur :\n${activity}`;
+
     const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -164,8 +239,8 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         model: process.env.OPENAI_MODEL?.trim() || "gpt-5.5",
         reasoning: { effort: "low" },
-        instructions: LINKEDIN_PROMPT,
-        input: `Activité utilisateur :\n${activity}`,
+        instructions,
+        input,
         max_output_tokens: 700,
         text: {
           verbosity: "medium",

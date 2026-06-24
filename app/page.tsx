@@ -120,36 +120,36 @@ const testimonials = [
 const howItWorksSteps = [
   {
     icon: PenLine,
-    title: "Décris ton activité",
-    text: "Explique simplement ce que tu fais ou ce que tu proposes.",
+    title: "Choisis ton mode",
+    text: "Sélectionne un type de post ou colle un brouillon LinkedIn à améliorer.",
   },
   {
     icon: Sparkles,
-    title: "Linkora génère ton contenu",
-    text: "Notre IA crée un post LinkedIn optimisé pour attirer des prospects.",
+    title: "Linkora adapte l'angle",
+    text: "Storytelling, expertise, opinion, étude de cas ou reformulation : chaque mode suit une logique dédiée.",
   },
   {
     icon: Rocket,
     title: "Publie et génère des leads",
-    text: "Copie ton post, publie-le et commence à attirer des prospects qualifiés.",
+    text: "Copie une version plus claire, plus structurée et pensée pour attirer des prospects qualifiés.",
   },
 ];
 
 const featureCards = [
   {
     icon: Lightbulb,
-    title: "Idées de posts instantanées",
-    text: "Transforme une activité, une offre ou une idée brute en angles de posts LinkedIn prêts à travailler.",
+    title: "Plusieurs types de posts",
+    text: "Génère du storytelling, de l'expertise, une prise de position ou une étude de cas à partir d'une simple idée.",
   },
   {
     icon: MessageSquareText,
-    title: "Hooks pensés pour convertir",
-    text: "Démarre tes publications avec des accroches conçues pour retenir l'attention de prospects qualifiés.",
+    title: "Reformulation de brouillons",
+    text: "Colle un post existant et Linkora le réécrit entièrement sans changer le sujet, le message ni l'idée.",
   },
   {
     icon: Target,
-    title: "Ton adapté à ton marché",
-    text: "Linkora ajuste le style selon ton activité, ton audience et ton niveau d'expertise.",
+    title: "Posts pensés pour convertir",
+    text: "Chaque version garde le même objectif : attirer l'attention de prospects qualifiés sur LinkedIn.",
   },
 ];
 
@@ -165,6 +165,11 @@ const faqs = [
   {
     question: "Puis-je modifier le contenu généré ?",
     answer: "Oui, vous pouvez modifier le texte avant publication.",
+  },
+  {
+    question: "Puis-je améliorer un post existant ?",
+    answer:
+      "Oui. Vous pouvez coller un brouillon LinkedIn et Linkora le reformule sans changer le sujet ni le message.",
   },
   {
     question: "Linkora fonctionne-t-il pour tous les secteurs ?",
@@ -342,7 +347,7 @@ function MobileHeroCard() {
       </h1>
 
       <p className="mt-7 text-[18px] font-medium leading-7 text-slate-600 sm:text-[19px]">
-        Pas juste de la visibilité, de l’acquisition.
+        Génère plusieurs types de posts ou améliore un brouillon existant.
       </p>
 
       <CardForm inputId="mobile-activity" />
@@ -392,7 +397,7 @@ function DesktopHero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-[720px] text-[22px] font-medium leading-9 text-slate-600 2xl:mt-7 2xl:text-[23px]">
-            Pas juste de la visibilité, de l’acquisition.
+            Génère plusieurs types de posts ou améliore un brouillon existant.
           </p>
 
           <DesktopPromptForm />
@@ -493,7 +498,7 @@ function FeaturesSection() {
     <section id="fonctionnalites" className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
         title="Fonctionnalités"
-        subtitle="Tout ce qu'il faut pour transformer une idée simple en post LinkedIn orienté prospects."
+        subtitle="Tout ce qu'il faut pour générer plusieurs types de posts LinkedIn ou améliorer un brouillon existant."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -527,7 +532,7 @@ function HowItWorksSection() {
     <section id="comment-ca-marche" className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
         title="Comment ça marche"
-        subtitle="Obtenez un post LinkedIn optimisé en moins de 30 secondes."
+        subtitle="Choisissez un format, décrivez votre idée ou collez un brouillon, puis obtenez une version optimisée."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -566,7 +571,7 @@ function ComparisonSection() {
     <section className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
         title="ChatGPT vs Linkora"
-        subtitle="Pourquoi Linkora est plus adapté à la création de posts LinkedIn qui génèrent des prospects."
+        subtitle="Pourquoi Linkora est plus adapté aux posts LinkedIn qui génèrent des prospects."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
@@ -586,8 +591,8 @@ function ComparisonSection() {
             Linkora
           </h3>
           <ul className="mt-6 space-y-4 text-[16px] font-medium leading-8 text-slate-600">
-            <li>Posts pensés dès le départ pour LinkedIn et l'acquisition.</li>
-            <li>Accroche, problème client, valeur et CTA structurés ensemble.</li>
+            <li>Types de posts guidés : storytelling, expertise, opinion et cas client.</li>
+            <li>Reformulation complète d'un brouillon sans changer le message.</li>
             <li>Contenu plus clair pour attirer des prospects qualifiés.</li>
           </ul>
         </article>

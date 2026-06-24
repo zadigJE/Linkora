@@ -18,6 +18,8 @@ type DashboardAppProps = {
     creditsRemaining: number;
     isPro: boolean;
     plan: "free" | "founder" | "pro";
+    email: string | null;
+    username: string | null;
   };
   initialGenerations: Generation[];
 };
@@ -28,6 +30,8 @@ export default function DashboardApp({
 }: DashboardAppProps) {
   const router = useRouter();
   const [profile, setProfile] = useState(initialProfile);
+  const profileName = profile.username?.trim() || profile.email || "Utilisateur";
+  const profileInitial = profileName.charAt(0).toUpperCase();
 
   function handleProfileChange(nextProfile: {
     creditsRemaining: number;
@@ -108,6 +112,21 @@ export default function DashboardApp({
             Upgrade
           </a>
         </div>
+        <div className="mt-3 flex items-center gap-3 rounded-[1.25rem] bg-white/80 px-4 py-3 ring-1 ring-slate-100">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
+            {profileInitial}
+          </span>
+          <div className="min-w-0">
+            {profile.username ? (
+              <p className="truncate text-sm font-extrabold text-slate-950">
+                {profile.username}
+              </p>
+            ) : null}
+            <p className="truncate text-xs font-bold text-slate-500">
+              {profile.email ?? "Email indisponible"}
+            </p>
+          </div>
+        </div>
         <button
           type="button"
           onClick={logout}
@@ -174,6 +193,21 @@ export default function DashboardApp({
           >
             Upgrade
           </a>
+        </div>
+        <div className="mt-3 flex items-center gap-3 rounded-2xl bg-white/80 px-3 py-2.5 ring-1 ring-slate-100">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
+            {profileInitial}
+          </span>
+          <div className="min-w-0">
+            {profile.username ? (
+              <p className="truncate text-sm font-extrabold text-slate-950">
+                {profile.username}
+              </p>
+            ) : null}
+            <p className="truncate text-xs font-bold text-slate-500">
+              {profile.email ?? "Email indisponible"}
+            </p>
+          </div>
         </div>
         <button
           type="button"

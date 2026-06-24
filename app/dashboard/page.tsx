@@ -100,6 +100,8 @@ export default async function DashboardPage() {
           creditsRemaining: profile?.credits_remaining ?? 1,
           isPro: profile?.is_pro ?? false,
           plan: profile?.plan ?? "free",
+          email: profile?.email ?? user.email ?? null,
+          username: profile?.username ?? null,
         }}
         initialGenerations={generations ?? []}
       />

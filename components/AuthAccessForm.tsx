@@ -79,9 +79,7 @@ export default function AuthAccessForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(
-          getSafeNextPath(),
-        )}`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 

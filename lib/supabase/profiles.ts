@@ -164,6 +164,54 @@ async function normalizeFreeCredits(
   });
 }
 
+async function normalizeLegacyFreeCredits(
+  supabase: SupabaseServerClient,
+  profile: LegacyLinkoraProfile,
+) {
+  if (profile.is_pro || profile.credits_remaining <= 0) {
+    return normalizeLegacyProfile(profile);
+  }
+
+  const { count, error: countError } = await supabase
+    .from("generations")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", profile.id);
+
+  if (countError) {
+    logSupabaseError(
+      "generations.legacy_count_for_credit_normalization",
+      countError,
+    );
+  }
+
+  const nextCredits =
+    count && count > 0 ? 0 : Math.min(profile.credits_remaining, 1);
+
+  if (nextCredits === profile.credits_remaining) {
+    return normalizeLegacyProfile(profile);
+  }
+
+  const { data: updatedProfile, error: updateError } = await supabase
+    .from("profiles")
+    .update({
+      credits_remaining: nextCredits,
+    })
+    .eq("id", profile.id)
+    .select(legacyProfileColumns)
+    .single<LegacyLinkoraProfile>();
+
+  if (!updateError && updatedProfile) {
+    return normalizeLegacyProfile(updatedProfile);
+  }
+
+  logSupabaseError("profiles.normalize_legacy_free_credits", updateError);
+
+  return normalizeLegacyProfile({
+    ...profile,
+    credits_remaining: nextCredits,
+  });
+}
+
 export async function getOrCreateProfile(
   supabase: SupabaseServerClient,
   user: User,
@@ -184,7 +232,7 @@ export async function getOrCreateProfile(
 
       if (!legacyReadError && legacyProfile) {
         return {
-          profile: normalizeLegacyProfile(legacyProfile),
+          profile: await normalizeLegacyFreeCredits(supabase, legacyProfile),
           error: null,
         };
       }

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BrandLogo from "./BrandLogo";
@@ -54,13 +55,23 @@ export default function DashboardApp({
     <div className="relative z-10 min-h-screen w-full lg:pl-72">
       <aside className="fixed inset-y-0 left-0 z-30 hidden h-screen w-72 flex-col border-r border-white/70 bg-white/[0.88] px-6 py-7 shadow-[0_18px_60px_rgba(15,23,42,0.10)] ring-1 ring-white/70 backdrop-blur-xl lg:flex">
         <div>
-          <a
-            href="/"
-            className="inline-flex"
-            aria-label="Retour à l'accueil Linkora"
-          >
-            <BrandLogo imageClassName="h-10 w-auto" />
-          </a>
+          <div className="flex items-center justify-between gap-3">
+            <a
+              href="/?landing=1"
+              className="inline-flex"
+              aria-label="Retour à l'accueil Linkora"
+            >
+              <BrandLogo imageClassName="h-10 w-auto" />
+            </a>
+            <a
+              href="/?landing=1"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+              aria-label="Retour à la première page"
+              title="Retour à la première page"
+            >
+              <ArrowLeft size={20} strokeWidth={2.4} />
+            </a>
+          </div>
           <div className="mt-6 rounded-[1.25rem] bg-blue-50 px-4 py-3 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
             {profile.isPro
               ? "Pro illimité"
@@ -139,19 +150,29 @@ export default function DashboardApp({
       <aside className="sticky top-0 z-30 border-b border-white/70 bg-white/[0.88] px-4 py-4 shadow-[0_18px_60px_rgba(15,23,42,0.10)] ring-1 ring-white/70 backdrop-blur-xl lg:hidden">
         <div className="flex items-center justify-between gap-4">
           <a
-            href="/"
+            href="/?landing=1"
             className="inline-flex"
             aria-label="Retour à l'accueil Linkora"
           >
             <BrandLogo imageClassName="h-8 w-auto" />
           </a>
-          <span className="rounded-full bg-blue-50 px-3 py-2 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
-            {profile.isPro
-              ? "Pro illimité"
-              : `${profile.creditsRemaining} crédit${
-                  profile.creditsRemaining > 1 ? "s" : ""
-                }`}
-          </span>
+          <div className="flex items-center gap-2">
+            <a
+              href="/?landing=1"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+              aria-label="Retour à la première page"
+              title="Retour à la première page"
+            >
+              <ArrowLeft size={19} strokeWidth={2.4} />
+            </a>
+            <span className="rounded-full bg-blue-50 px-3 py-2 text-sm font-extrabold text-linkpost-blue ring-1 ring-blue-100">
+              {profile.isPro
+                ? "Pro illimité"
+                : `${profile.creditsRemaining} crédit${
+                    profile.creditsRemaining > 1 ? "s" : ""
+                  }`}
+            </span>
+          </div>
         </div>
         <nav className="mt-4 grid grid-cols-2 gap-2 text-sm font-extrabold">
           <a

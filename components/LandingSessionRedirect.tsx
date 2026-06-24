@@ -7,11 +7,15 @@ import {
   isSupabaseConfigured,
 } from "../lib/supabase/client";
 
-export default function LandingSessionRedirect() {
+export default function LandingSessionRedirect({
+  enabled = true,
+}: {
+  enabled?: boolean;
+}) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
+    if (!enabled || !isSupabaseConfigured()) {
       return;
     }
 
@@ -44,7 +48,7 @@ export default function LandingSessionRedirect() {
       isMounted = false;
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [enabled, router]);
 
   return null;
 }

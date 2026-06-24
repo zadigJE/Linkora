@@ -392,7 +392,7 @@ function DesktopHero() {
           <SocialProofBadge className="shadow-[0_20px_60px_rgba(15,23,42,0.10)]" />
 
           <h1 className="mx-auto mt-8 max-w-[980px] text-[58px] font-extrabold leading-[1.02] tracking-normal text-slate-950 xl:text-[66px] 2xl:text-[76px]">
-            Crée des posts LinkedIn qui génèrent{" "}
+            Crée des posts LinkedIn qui attirent{" "}
             <span className="text-linkpost-blue">des prospects</span>
           </h1>
 
@@ -571,7 +571,7 @@ function ComparisonSection() {
     <section className="scroll-mt-32 py-20 sm:py-24 lg:py-28">
       <SectionHeading
         title="ChatGPT vs Linkora"
-        subtitle="Pourquoi Linkora est plus adapté aux posts LinkedIn qui génèrent des prospects."
+        subtitle="Pourquoi Linkora est plus adapté aux posts LinkedIn qui attirent des prospects."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
@@ -646,7 +646,7 @@ function Footer() {
             <BrandLogo imageClassName="h-10 w-auto" />
           </a>
           <p className="mt-3 max-w-md text-sm font-medium leading-6 text-slate-500">
-            Crée des posts LinkedIn qui génèrent des prospects.
+            Crée des posts LinkedIn qui attirent des prospects.
           </p>
         </div>
 

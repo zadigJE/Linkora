@@ -41,7 +41,7 @@ const cardBadges = [
     className: "border-blue-100 bg-white text-slate-700 shadow-blue-100",
   },
   {
-    label: "✓ Gratuit pour commencer",
+    label: "✓ 1 génération gratuite",
     className: "border-emerald-100 bg-white text-slate-700 shadow-emerald-100",
   },
 ];
@@ -158,7 +158,7 @@ const featureCards = [
 const faqs = [
   {
     question: "Linkora est-il gratuit ?",
-    answer: "Oui, vous pouvez commencer gratuitement.",
+    answer: "Oui, avec 1 génération gratuite.",
   },
   {
     question: "Combien de temps faut-il pour générer un post ?",
@@ -355,7 +355,7 @@ function MobileHeroCard() {
       <CardForm inputId="mobile-activity" />
 
       <p className="mt-4 text-[13px] font-bold text-slate-400 sm:text-sm">
-        Gratuit. Sans carte. Résultat en 30 secondes.
+        1 génération gratuite. Sans carte. Résultat en 30 secondes.
       </p>
 
       <BottomBadges />
@@ -376,7 +376,7 @@ function DesktopPromptForm() {
         buttonClassName="mt-5 h-[64px] w-full max-w-[540px] rounded-[1.25rem] bg-linkpost-blue px-8 text-[19px] font-extrabold text-white shadow-button transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-200 active:translate-y-px 2xl:mt-6 2xl:h-[66px]"
       />
       <p className="mt-5 text-[15px] font-bold text-slate-500">
-        Gratuit. Sans carte. Résultat en 30 secondes.
+        1 génération gratuite. Sans carte. Résultat en 30 secondes.
       </p>
 
       <HeroAvatarProof />

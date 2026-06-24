@@ -22,6 +22,9 @@ add column if not exists plan text not null default 'free';
 alter table public.profiles
 add column if not exists updated_at timestamp with time zone not null default now();
 
+alter table public.profiles
+alter column credits_remaining set default 1;
+
 create table if not exists public.generations (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,

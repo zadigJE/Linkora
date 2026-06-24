@@ -12,6 +12,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type DashboardGeneratorProps = {
@@ -77,7 +78,7 @@ function LockedResult() {
           <Lock size={24} strokeWidth={2.6} />
         </div>
         <h2 className="mt-5 text-2xl font-extrabold text-slate-950">
-          🔒 Plus de générations gratuites disponibles
+          🔒 Plus de génération gratuite disponible
         </h2>
         <p className="mx-auto mt-4 max-w-md text-[16px] font-medium leading-8 text-slate-600">
           Vous avez utilisé votre 1 génération gratuite. Passez à Linkora
@@ -101,6 +102,7 @@ export default function DashboardGenerator({
   initialGenerations,
   onProfileChange,
 }: DashboardGeneratorProps) {
+  const router = useRouter();
   const [activity, setActivity] = useState("");
   const [generationMode, setGenerationMode] =
     useState<GenerationMode>("generate");
@@ -140,6 +142,7 @@ export default function DashboardGenerator({
       setHasLockedResult(true);
       setCurrentGenerationId("");
       setSaveMessage("");
+      router.push("/pricing");
       return;
     }
 
@@ -193,6 +196,7 @@ export default function DashboardGenerator({
             isPro: false,
           });
           setHasLockedResult(true);
+          router.push("/pricing");
           return;
         }
 

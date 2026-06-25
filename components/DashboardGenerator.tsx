@@ -123,6 +123,7 @@ export default function DashboardGenerator({
   const [isPro, setIsPro] = useState(initialIsPro);
   const [generations, setGenerations] = useState(initialGenerations);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const resultTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const savedActivity =
@@ -132,6 +133,17 @@ export default function DashboardGenerator({
 
     setActivity(savedActivity);
   }, []);
+
+  useEffect(() => {
+    const textarea = resultTextareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [result]);
 
   async function generatePost() {
     const trimmedActivity = activity.trim();
@@ -515,13 +527,14 @@ export default function DashboardGenerator({
               </div>
             </div>
             <textarea
+              ref={resultTextareaRef}
               value={result}
               onChange={(event) => {
                 setResult(event.target.value);
                 setSaveMessage("");
               }}
-              rows={12}
-              className="mt-6 min-h-[320px] w-full resize-y rounded-[1.35rem] border border-slate-100 bg-white px-5 py-5 text-[16px] font-medium leading-8 text-slate-700 shadow-[0_8px_28px_rgba(15,23,42,0.06)] outline-none transition focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
+              rows={1}
+              className="mt-6 min-h-[320px] w-full resize-none overflow-hidden rounded-[1.35rem] border border-slate-100 bg-white px-5 py-5 text-[16px] font-medium leading-8 text-slate-700 shadow-[0_8px_28px_rgba(15,23,42,0.06)] outline-none transition focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
             />
             {saveMessage ? (
               <p className="mt-3 text-sm font-extrabold text-emerald-600">
@@ -618,7 +631,7 @@ export default function DashboardGenerator({
 
       {selectedGeneration ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 px-4 py-6 backdrop-blur-sm">
-          <div className="max-h-[86vh] w-full max-w-2xl overflow-hidden rounded-[2rem] bg-white shadow-[0_30px_100px_rgba(15,23,42,0.22)] ring-1 ring-white/90">
+          <div className="w-full max-w-2xl rounded-[2rem] bg-white shadow-[0_30px_100px_rgba(15,23,42,0.22)] ring-1 ring-white/90">
             <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
               <div>
                 <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-linkpost-blue">
@@ -637,7 +650,7 @@ export default function DashboardGenerator({
                 <X size={20} />
               </button>
             </div>
-            <div className="max-h-[60vh] overflow-y-auto px-6 py-5">
+            <div className="px-6 py-5">
               <p className="whitespace-pre-line text-[16px] font-medium leading-8 text-slate-700">
                 {selectedGeneration.generated_post}
               </p>
